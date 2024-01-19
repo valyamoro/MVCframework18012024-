@@ -6,7 +6,7 @@ use app\Services\BaseRepository;
 
 class HomeRepository extends BaseRepository
 {
-    public function getProducts()
+    public function getProducts(): array
     {
         $query = 'select * from products';
 

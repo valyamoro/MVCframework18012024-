@@ -6,9 +6,9 @@ use app\Services\BaseService;
 
 class HomeService extends BaseService
 {
-    public function getProducts()
+    public function getProducts(): array
     {
-        $this->repository->getProducts();
+        return $this->repository->getProducts();
     }
 
 }

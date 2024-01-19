@@ -2,6 +2,11 @@
 
 namespace app\core;
 
+use app\Database\DatabaseConfiguration;
+use app\Database\DatabaseConnection;
+use app\Database\DatabasePDOConnection;
+use app\Database\PDODriver;
+
 class Router
 {
     private function getUri(): string
@@ -24,6 +29,27 @@ class Router
             $class = $namespace . $segments;
         }
 
-        return '';
+        $repository = new ("app\Services\\{$segments}\Repositories\\{$segments}Repository")($this->getConnection());
+
+        $service = new ("app\Services\\{$segments}\\{$segments}Service")($repository);
+
+        $obj = new ($class . 'Controller')($this->getConnection(), $service);
+
+        return $obj->index($segments);
+    }
+
+    public function getConnection(): PDODriver
+    {
+        $configuration = require __DIR__ . '/../config/db.php';
+
+        $dataBaseConfiguration = new DatabaseConfiguration(...$configuration);
+        $dataBasePDOConnection = new DatabasePDOConnection($dataBaseConfiguration);
+
+        return new PDODriver($dataBasePDOConnection->connection());
+    }
+
+    public function resolve()
+    {
+        echo $this->dispatch();
     }
 }
