@@ -2,17 +2,18 @@
 
 namespace app\Services\Products\Repositories;
 
-use app\Model\ProductModel;
+use app\Model\PhoneProductModel;
 use app\Services\BaseRepository;
 
-class ProductRepository extends BaseRepository
+class PhoneProductRepository extends BaseRepository
 {
     public function getProducts(): array
     {
-        $query = 'select * from ' . ProductModel::TABLE_NAME;
+        $query = 'select * from ' . PhoneProductModel::TABLE_NAME;
 
         $this->connection->prepare($query)->execute();
 
         return $this->connection->fetchAll();
     }
+
 }

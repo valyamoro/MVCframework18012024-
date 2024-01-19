@@ -2,7 +2,13 @@
 
 namespace app\Services\Products;
 
-class ProductService
+use app\Services\BaseService;
+
+class ProductService extends BaseService
 {
+    public function getProducts(): array
+    {
+        return $this->repository->getProducts();
+    }
 
 }

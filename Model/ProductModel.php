@@ -2,7 +2,10 @@
 
 namespace app\Model;
 
-class ProductModel
+use app\core\Model;
+
+class ProductModel extends Model
 {
+    public const TABLE_NAME = 'productsCategory';
 
 }

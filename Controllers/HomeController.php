@@ -9,9 +9,7 @@ class HomeController extends Controller
 {
     public function index(string $view): string
     {
-        $products['products'] = $this->service->getProducts();
-
-        return View::render($view, $products);
+        return View::render($view);
     }
 
 }

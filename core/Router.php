@@ -27,15 +27,28 @@ class Router
 
         if ($segments === 'Home') {
             $class = $namespace . $segments;
+            $repository = new ("app\Services\\{$segments}\Repositories\\{$segments}Repository")($this->getConnection());
+            $service = new ("app\Services\\{$segments}\\{$segments}Service")($repository);
+        } else {
+            if (\count($segments) === 1) {
+                $segmentWithOutS = \rtrim($segments[0], 's');
+                $class = $namespace . $segmentWithOutS;
+
+                $repository = new ("app\Services\\{$segments[0]}\Repositories\\{$segmentWithOutS}Repository")($this->getConnection());
+                $service = new ("app\Services\\{$segments[0]}\\{$segmentWithOutS}Service")($repository);
+            } elseif (\count($segments) === 2) {
+                $segmentWithOutS = \rtrim($segments[0], 's');
+                $class = $namespace . $segmentWithOutS;
+
+                $repository = new ("app\Services\\{$segments[0]}\Repositories\\{$segments[1]}{$segmentWithOutS}Repository")($this->getConnection());
+                $service = new ("app\Services\\{$segments[0]}\\{$segments[1]}{$segmentWithOutS}Service")($repository);
+            }
+
         }
-
-        $repository = new ("app\Services\\{$segments}\Repositories\\{$segments}Repository")($this->getConnection());
-
-        $service = new ("app\Services\\{$segments}\\{$segments}Service")($repository);
 
         $obj = new ($class . 'Controller')($this->getConnection(), $service);
 
-        return $obj->index($segments);
+        return $obj->$method($segments[0]);
     }
 
     public function getConnection(): PDODriver
